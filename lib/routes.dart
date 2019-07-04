@@ -13,8 +13,9 @@ class RouteManager {
           builder: (_) => Welcome(),
         );
       case Weather.routeName:
+        final Weather args = settings.arguments;
         return MaterialPageRoute(
-          builder: (_) => Weather(),
+          builder: (_) => Weather(userName: args.userName),
         );
       default:
         return MaterialPageRoute(
