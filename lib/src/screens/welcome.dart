@@ -12,20 +12,19 @@ class Welcome extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<Position> _askLocationPermission() async {
       try {
-        Position position = await Geolocator()
+        return await Geolocator()
             .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-        print(position);
-        return position;
       } catch (e) {
         return null;
       }
     }
 
-    void _navigate() {
+    void _navigate(Position position) {
       Navigator.of(context).pushNamed(
         Weather.routeName,
         arguments: Weather(
           userName: this._controller.text,
+          position: position,
         ),
       );
     }
@@ -59,25 +58,8 @@ class Welcome extends StatelessWidget {
           'Type your name',
           controller: this._controller,
           onConfirm: () async {
-            GeolocationStatus geolocationStatus =
-                await Geolocator().checkGeolocationPermissionStatus();
-
-            print(geolocationStatus);
-
-            switch (geolocationStatus) {
-              case GeolocationStatus.denied:
-              case GeolocationStatus.disabled:
-                var location = await _askLocationPermission();
-                if (location == null) {
-                  _showModal();
-                } else {
-                  _navigate();
-                }
-                break;
-              case GeolocationStatus.granted:
-              default:
-                _navigate();
-            }
+            Position position = await _askLocationPermission();
+            position == null ? _showModal() : _navigate(position);
           },
         ),
       ),

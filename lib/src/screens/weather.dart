@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Weather extends StatelessWidget {
   static const String routeName = '/weather';
   final String userName;
+  final Position position;
 
-  Weather({this.userName});
+  Weather({
+    @required this.userName,
+    @required this.position,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,15 +19,23 @@ class Weather extends StatelessWidget {
         title: Text('Weather'),
       ),
       body: Container(
-        // alignment: Alignment.topCenter,
-        padding: EdgeInsets.all(20.0),
-        child: Text(
-          'Hello ${this.userName},',
-          style: TextStyle(
-            fontSize: 22.0,
-          ),
-        ),
-      ),
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            children: <Widget>[
+              Text(
+                'Hello ${this.userName},',
+                style: TextStyle(
+                  fontSize: 22.0,
+                ),
+              ),
+              Text(
+                'Lat lon ${position.latitude} ${position.longitude},',
+                style: TextStyle(
+                  fontSize: 22.0,
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
